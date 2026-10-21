@@ -1,0 +1,32 @@
+---
+// src/components/Navbar.astro
+import NavLink from "./NavLink.astro";
+
+// Define your navigation items dynamically
+const navItems = [
+    { label: "Home", href: "#" },
+    { label: "Work", href: "#work" },
+    { label: "Services", href: "#services" },
+    { label: "About", href: "#about" },
+    { label: "Contact", href: "#contact" },
+];
+---
+
+<nav class="border-b border-line px-8 py-6 flex justify-between items-center">
+    <!-- Brand Logo -->
+    <a
+        href="/"
+        class="font-serif tracking-widest text-lg font-medium uppercase text-ink"
+    >
+        DAN
+    </a>
+
+    <!-- Dynamic Nav Links -->
+    <div class="flex space-x-8 items-center">
+        {
+            navItems.map((item) => (
+                <NavLink href={item.href} label={item.label} />
+            ))
+        }
+    </div>
+</nav>

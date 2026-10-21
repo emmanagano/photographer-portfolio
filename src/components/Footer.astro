@@ -1,0 +1,55 @@
+---
+// src/components/Footer.astro
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="w-full border-t border-line bg-paper py-10">
+    <div
+        class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6"
+    >
+        <!-- Copyright / Brand -->
+        <div
+            class="text-xs font-serif tracking-widest uppercase text-ink-muted order-3 md:order-1"
+        >
+            © {currentYear} DAN — ALL RIGHTS RESERVED
+        </div>
+
+        <!-- Centered Placeholder Email -->
+        <div class="order-1 md:order-2">
+            <a
+                href="mailto:hello@danportfolio.com"
+                class="font-mono text-xs md:text-sm text-ink/80 hover:text-ink tracking-widest uppercase underline underline-offset-4 decoration-ink/30 hover:decoration-ink transition-all"
+            >
+                jdgalleryy@gmail.com
+            </a>
+        </div>
+
+        <!-- Social Icons (Made Prominent) -->
+        <div class="flex items-center space-x-4 order-2 md:order-3">
+            <!-- Instagram Icon Button -->
+            <a
+                href="https://www.instagram.com/_jdgallery/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center w-10 h-10 rounded-full border border-ink/20 bg-ink/5 hover:bg-ink hover:text-paper text-ink transition-all duration-300 shadow-sm hover:scale-105"
+                aria-label="Instagram"
+            >
+                <svg
+                    class="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"
+                    ></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"
+                    ></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                </svg>
+            </a>
+        </div>
+    </div>
+</footer>

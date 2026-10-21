@@ -1,0 +1,21 @@
+---
+// src/components/Button.astro
+interface Props {
+    text: string;
+    href: string;
+    variant?: "outline" | "filled";
+}
+
+const { text, href, variant = "outline" } = Astro.props;
+
+const baseStyles =
+    "inline-block px-7 py-3.5 text-xs uppercase tracking-widest transition-all duration-300 rounded-sm";
+const variants = {
+    outline: "border border-ink text-ink hover:bg-ink hover:text-paper",
+    filled: "bg-ink text-paper border border-ink hover:bg-opacity-90",
+};
+---
+
+<a href={href} class={`${baseStyles} ${variants[variant]}`}>
+    {text}
+</a>

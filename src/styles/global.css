@@ -1,0 +1,41 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss"; */
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import "tailwindcss";
+
+/* 1. DEFINE YOUR CSS DESIGN TOKENS HERE */
+:root {
+  /* Fonts */
+  --font-primary: 'Plus Jakarta Sans', sans-serif;
+  --font-secondary: 'Cormorant Garamond', serif;
+
+  /* Colors */
+  --bg-primary: #F7F6F4;    /* Main paper background */
+  --bg-secondary: #FFFFFF;  /* Cards, modals, containers */
+  --bg-tertiary: #E2DFD7;   /* Subtle accents, borders, or lines */
+
+  --text-main: #1A1A1A;     /* Primary text color */
+  --text-muted: #666666;    /* Subtitles & captions */
+}
+
+/* 2. MAP THEM TO TAILWIND UTILITY CLASSES & GLOBAL DEFAULTS */
+@theme {
+  --font-sans: var(--font-primary);
+  --font-serif: var(--font-secondary);
+
+  --color-paper: var(--bg-primary);
+  --color-card: var(--bg-secondary);
+  --color-line: var(--bg-tertiary);
+
+  --color-ink: var(--text-main);
+  --color-ink-muted: var(--text-muted);
+}
+
+/* Base Body Application */
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+}

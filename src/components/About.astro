@@ -1,0 +1,43 @@
+---
+// src/components/About.astro
+---
+
+<section id="about" class="max-w-7xl mx-auto px-6 py-24 border-t border-line">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <!-- Left Column: Typography & Content -->
+        <div class="space-y-8 max-w-xl">
+            <h2
+                class="font-serif text-3xl md:text-4xl tracking-[0.2em] uppercase text-ink"
+            >
+                About
+            </h2>
+
+            <div
+                class="space-y-6 text-ink-muted text-sm md:text-base leading-relaxed font-light"
+            >
+                <p>Hi, I'm Dan.</p>
+                <p>
+                    Welcome! I’m a passionate creator dedicated to preserving
+                    your most important milestones. Whether I'm tracking the
+                    action at a sports game, capturing tears of joy at a
+                    wedding, or shooting sweeping drone landscapes, my goal is
+                    to make the process easy, comfortable, and fun. Let's create
+                    something memorable together.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Column: Image Frame -->
+        <div class="w-full flex justify-center lg:justify-end">
+            <div
+                class="relative w-full max-w-md aspect-[4/5] bg-line/20 border border-line overflow-hidden shadow-sm"
+            >
+                <img
+                    src="/dan_profile.jpg"
+                    alt="Dan - Creative Director and Editor"
+                    class="w-full h-full object-cover contrast-105 transition-all duration-700"
+                />
+            </div>
+        </div>
+    </div>
+</section>
