@@ -1,35 +1,21 @@
 ---
 // src/pages/index.astro
-import Navbar from "../components/Navbar.astro";
+import Base from "../layouts/Base.astro";
 import Hero from "../components/Hero.astro";
-import "../styles/global.css";
-import Services from "../components/Services.astro";
-import ParallaxBanner from "../components/ParallaxBanner.astro";
-import About from "../components/About.astro";
 import Work from "../components/Work.astro";
+import Services from "../components/Services.astro";
+import InstagramBanner from "../components/InstagramBanner.astro";
+import About from "../components/About.astro";
 import ClientReviews from "../components/ClientReviews.astro";
 import Contact from "../components/Contact.astro";
-import Footer from "../components/Footer.astro";
 ---
 
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width" />
-        <title>Editorial Portfolio</title>
-    </head>
-    <body class="bg-paper text-ink font-sans antialiased">
-        <Navbar />
-        <main>
-            <Hero />
-            <Services />
-            <ParallaxBanner />
-            <About />
-            <Work />
-            <ClientReviews />
-            <Contact />
-        </main>
-        <Footer />
-    </body>
-</html>
+<Base>
+    <Hero />
+    <Work />
+    <Services />
+    <InstagramBanner />
+    <About />
+    <ClientReviews />
+    <Contact />
+</Base>

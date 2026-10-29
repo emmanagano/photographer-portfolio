@@ -4,84 +4,56 @@ import Button from "./Button.astro";
 
 const services = [
     {
-        title: "Photography & Photoshop",
-        number: "01",
-        category: "Photo",
+        title: "Photography & Retouching",
         description:
-            "Sports, Weddings & Occasions: Dynamic action shots, heartfelt wedding moments, and vibrant birthday memories captured with care. Includes professional retouching and editing.",
+            "Action shots, heartfelt wedding moments and vibrant celebrations, captured with care and professionally retouched.",
     },
     {
         title: "Filming & Videography",
-        number: "02",
-        category: "Film",
         description:
-            "Cinematic Coverage: Full-scale video production for events, promos, and special occasions that let you relive the experience.",
+            "Cinematic coverage for events, promos and special occasions that lets you relive the experience.",
     },
     {
         title: "Video Editing",
-        number: "03",
-        category: "Editing",
         description:
-            "Post-Production: Turning raw footage into polished, engaging stories with smooth pacing, color grading, and audio cleanup.",
+            "Raw footage turned into polished stories, with smooth pacing, color grading and audio cleanup.",
     },
     {
-        title: "Aerial & Drone Shoots",
-        number: "04",
-        category: "Aerial",
+        title: "Aerial & Drone",
         description:
-            "From the Sky: Licensed drone photography and videography giving your project a breathtaking, high-perspective view.",
+            "Licensed drone photography and video for a breathtaking, high-perspective view.",
     },
     {
         title: "Photo Printing",
-        number: "05",
-        category: "Photo",
-        description: "Physical Keepsakes: High-quality photo printing services so your digital memories turn into tangible art you can hold and display."
-    }
+        description:
+            "High-quality prints that turn your digital memories into something you can hold and display.",
+    },
 ];
 ---
 
-<section
-    id="services"
-    class="max-w-7xl mx-auto px-6 py-24 border-t border-line"
->
-    <!-- Section Header -->
-    <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 pb-6 border-b border-line/40">
-        <div>
-            <h2 class="font-serif text-3xl md:text-4xl tracking-widest uppercase text-ink">
-                Services
-            </h2>
-        </div>
+<section id="services" class="container-x section-y border-t border-line">
+    <div class="mb-10 space-y-3 md:mb-14">
+        <p class="eyebrow">Services</p>
+        <h2 class="heading">What I offer</h2>
     </div>
 
-    <!-- Clean Typography Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+    <ol class="grid gap-x-12 md:grid-cols-2">
         {
-            services.map((service) => (
-                <div class="group relative flex flex-col justify-between border-t border-line/60 pt-6 transition-colors duration-300 hover:border-ink">
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="font-mono text-xs tracking-widest text-ink-muted group-hover:text-ink transition-colors">
-                                {service.number} // {service.category}
-                            </span>
-                        </div>
-
-                        <h3 class="font-serif text-2xl tracking-wide text-ink group-hover:translate-x-1 transition-transform duration-300">
-                            {service.title}
-                        </h3>
-
-                        <p class="text-ink-muted text-sm font-light leading-relaxed max-w-xl">
-                            {service.description}
-                        </p>
+            services.map((service, i) => (
+                <li class="flex gap-5 border-t border-line py-6">
+                    <span class="pt-1 text-sm text-ink-muted tabular-nums">
+                        {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div class="space-y-2">
+                        <h3 class="font-serif text-2xl">{service.title}</h3>
+                        <p class="text-ink-muted">{service.description}</p>
                     </div>
-
-                    <!-- Subtle interactive line or arrow indicator -->
-                </div>
+                </li>
             ))
         }
-    </div>
+    </ol>
 
-    <!-- Bottom CTA -->
-    <div class="text-center mt-20">
-        <Button text="Inquire About a Project" href="#contact" variant="outline" />
+    <div class="mt-10">
+        <Button href="#contact">Inquire about a project</Button>
     </div>
 </section>

@@ -1,0 +1,200 @@
+---
+// src/pages/work/[slug].astro
+import { Image, getImage } from "astro:assets";
+import Base from "../../layouts/Base.astro";
+import Button from "../../components/Button.astro";
+import { galleries, site, type Gallery } from "../../data/site";
+
+export function getStaticPaths() {
+    return galleries.map((gallery, i) => ({
+        params: { slug: gallery.slug },
+        props: { gallery, next: galleries[(i + 1) % galleries.length] },
+    }));
+}
+
+interface Props {
+    gallery: Gallery;
+    next: Gallery;
+}
+
+const { gallery, next } = Astro.props;
+
+// Large version of each photo for the lightbox.
+const photos = await Promise.all(
+    gallery.photos.map(async (photo, i) => ({
+        ...photo,
+        alt: `${gallery.title}, photo ${i + 1} of ${gallery.photos.length}`,
+        full: (
+            await getImage({
+                src: photo.src,
+                width: 1800,
+                format: "webp",
+                quality: 75,
+            })
+        ).src,
+    })),
+);
+---
+
+<Base title={gallery.title} description={gallery.description}>
+    <section class="container-x pt-8 pb-10 md:pt-16 md:pb-14">
+        <a
+            href="/#work"
+            class="text-sm text-ink-muted transition-colors hover:text-ink"
+        >
+            ← All work
+        </a>
+        <div class="mt-8 space-y-3">
+            <p class="eyebrow">{photos.length} photos</p>
+            <h1 class="heading md:text-6xl">{gallery.title}</h1>
+            <p class="max-w-xl text-ink-muted sm:text-lg">
+                {gallery.description}
+            </p>
+        </div>
+    </section>
+
+    <!-- Masonry grid: two columns on phones, three on desktop -->
+    <section class="container-x columns-2 gap-2 sm:gap-3 lg:columns-3">
+        {
+            photos.map((photo, i) => (
+                <button
+                    type="button"
+                    class="lightbox-open mb-2 block w-full cursor-zoom-in break-inside-avoid sm:mb-3"
+                    data-index={i}
+                    aria-label={`Open ${photo.alt}`}
+                >
+                    <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        widths={[360, 640, 960]}
+                        width={960}
+                        sizes="(min-width: 1024px) 33vw, 50vw"
+                        class="w-full bg-line"
+                    />
+                </button>
+            ))
+        }
+    </section>
+
+    <section class="container-x section-y">
+        <div
+            class="flex flex-col gap-10 border-t border-line pt-10 md:flex-row md:items-end md:justify-between"
+        >
+            <div class="space-y-3">
+                <p class="eyebrow">Next gallery</p>
+                <a
+                    href={`/work/${next.slug}`}
+                    class="heading block hover:underline underline-offset-8 decoration-1"
+                >
+                    {next.title} →
+                </a>
+                <p class="text-ink-muted">
+                    See more of Dan's work on{" "}
+                    <a
+                        href={site.instagram.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="text-ink underline underline-offset-4"
+                    >
+                        Instagram ({site.instagram.handle})
+                    </a>
+                </p>
+            </div>
+            <Button href="/#contact" variant="filled">Book a shoot</Button>
+        </div>
+    </section>
+
+    <!-- Lightbox -->
+    <dialog
+        id="lightbox"
+        class="m-0 h-dvh max-h-none w-full max-w-none flex-col bg-paper p-0 text-ink backdrop:bg-paper open:flex"
+        aria-label={`${gallery.title} photo viewer`}
+    >
+        <div
+            class="container-x flex h-14 shrink-0 items-center justify-between"
+        >
+            <span
+                id="lightbox-count"
+                class="text-sm text-ink-muted tabular-nums"></span>
+            <button
+                id="lightbox-close"
+                type="button"
+                class="-mr-2 h-11 px-2 text-sm"
+            >
+                Close
+            </button>
+        </div>
+        <div class="relative min-h-0 flex-1 px-2 sm:px-16">
+            <img
+                id="lightbox-img"
+                alt=""
+                class="h-full w-full object-contain"
+            />
+            <button
+                id="lightbox-prev"
+                type="button"
+                class="absolute top-1/2 left-2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center text-2xl sm:flex"
+                aria-label="Previous photo">←</button
+            >
+            <button
+                id="lightbox-next"
+                type="button"
+                class="absolute top-1/2 right-2 hidden h-12 w-12 -translate-y-1/2 items-center justify-center text-2xl sm:flex"
+                aria-label="Next photo">→</button
+            >
+        </div>
+        <p class="py-4 text-center text-xs text-ink-muted sm:hidden">
+            Swipe to browse
+        </p>
+    </dialog>
+</Base>
+
+<script
+    define:vars={{ photos: photos.map((p) => ({ full: p.full, alt: p.alt })) }}
+>
+    const dialog = document.getElementById("lightbox");
+    const img = document.getElementById("lightbox-img");
+    const count = document.getElementById("lightbox-count");
+    let current = 0;
+
+    function show(i) {
+        current = (i + photos.length) % photos.length;
+        img.src = photos[current].full;
+        img.alt = photos[current].alt;
+        count.textContent = `${current + 1} / ${photos.length}`;
+        // Warm the cache for the next photo.
+        new Image().src = photos[(current + 1) % photos.length].full;
+    }
+
+    document.querySelectorAll(".lightbox-open").forEach((button) =>
+        button.addEventListener("click", () => {
+            show(Number(button.dataset.index));
+            dialog.showModal();
+        }),
+    );
+    document
+        .getElementById("lightbox-close")
+        .addEventListener("click", () => dialog.close());
+    document
+        .getElementById("lightbox-prev")
+        .addEventListener("click", () => show(current - 1));
+    document
+        .getElementById("lightbox-next")
+        .addEventListener("click", () => show(current + 1));
+
+    dialog.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "ArrowRight") show(current + 1);
+    });
+
+    let startX = 0;
+    dialog.addEventListener(
+        "touchstart",
+        (e) => (startX = e.touches[0].clientX),
+        { passive: true },
+    );
+    dialog.addEventListener("touchend", (e) => {
+        const dx = e.changedTouches[0].clientX - startX;
+        if (Math.abs(dx) > 50) show(current + (dx < 0 ? 1 : -1));
+    });
+</script>

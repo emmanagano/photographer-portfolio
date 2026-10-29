@@ -1,75 +1,43 @@
 ---
 // src/components/Work.astro
-import Button from "./Button.astro";
-
-// Automatically import all images from the public/dan-works directory
-const workImagesFiles = import.meta.glob<{ default: string }>(
-    "/public/dan-works/*.{jpg,jpeg,png,webp}",
-    { eager: true },
-);
-
-// Extract the public-relative paths (turning /public/dan-works/photo.jpg into /dan-works/photo.jpg)
-const workImages = Object.keys(workImagesFiles).map((filePath) => {
-    return filePath.replace("/public", "");
-});
-
-// Fallback just in case the folder is empty or path differs
-const finalImages =
-    workImages.length > 0 ? workImages : ["/work1.jpg", "/work2.jpg"];
+import { Image } from "astro:assets";
+import { galleries } from "../data/site";
 ---
 
-<section id="work" class="w-full border-t border-line bg-paper overflow-hidden">
-    <div class="grid grid-cols-1 lg:grid-cols-2 min-h-[500px] lg:min-h-[600px]">
-        <!-- Left Side: Dynamic Image Slideshow -->
-        <div
-            class="relative w-full h-[350px] lg:h-full bg-line/20 overflow-hidden border-b lg:border-b-0 lg:border-r border-line"
-        >
-            {
-                finalImages.map((imagePath, index) => (
-                    <div
-                        class={`work-slide absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-                            index === 0 ? "opacity-100 z-10" : "opacity-0 z-0"
-                        }`}
-                        data-index={index}
-                    >
-                        <img
-                            src={imagePath}
-                            alt={`Dan's portfolio work ${index + 1}`}
-                            class="w-full h-full object-cover"
+<section id="work" class="container-x section-y border-t border-line">
+    <div class="mb-10 space-y-3 md:mb-14">
+        <p class="eyebrow">Portfolio</p>
+        <h2 class="heading">Selected work</h2>
+    </div>
+
+    <div class="grid gap-10 sm:grid-cols-2 sm:gap-6">
+        {
+            galleries.map((gallery) => (
+                <a href={`/work/${gallery.slug}`} class="group block">
+                    <div class="overflow-hidden bg-line">
+                        <Image
+                            src={gallery.cover.src}
+                            alt={`${gallery.title} gallery cover`}
+                            widths={[480, 720, 1080]}
+                            width={1080}
+                            sizes="(min-width: 640px) 50vw, 100vw"
+                            class="aspect-[4/3] w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                         />
                     </div>
-                ))
-            }
-        </div>
-
-        <!-- Right Side: Clean WORK Title & CTA -->
-        <div
-            class="flex flex-col justify-center items-center p-12 lg:p-20 text-center space-y-8"
-        >
-            <h2
-                class="font-serif text-4xl md:text-5xl tracking-[0.2em] uppercase text-ink"
-            >
-                WORK
-            </h2>
-
-            <Button text="Discover More" href="#contact" variant="outline" />
-        </div>
+                    <div class="mt-4 flex items-baseline justify-between gap-4">
+                        <h3 class="font-serif text-2xl">{gallery.title}</h3>
+                        <span class="text-sm text-ink-muted">
+                            {gallery.photos.length} photos
+                        </span>
+                    </div>
+                    <p class="mt-1 text-sm text-ink-muted">
+                        {gallery.description}
+                    </p>
+                    <span class="mt-3 inline-block text-sm font-medium underline decoration-line underline-offset-4 transition-colors group-hover:decoration-ink">
+                        View gallery
+                    </span>
+                </a>
+            ))
+        }
     </div>
 </section>
-
-<script>
-    const slides = document.querySelectorAll<HTMLElement>(".work-slide");
-    let currentIndex = 0;
-
-    if (slides.length > 1) {
-        setInterval(() => {
-            slides[currentIndex].classList.remove("opacity-100", "z-10");
-            slides[currentIndex].classList.add("opacity-0", "z-0");
-
-            currentIndex = (currentIndex + 1) % slides.length;
-
-            slides[currentIndex].classList.remove("opacity-0", "z-0");
-            slides[currentIndex].classList.add("opacity-100", "z-10");
-        }, 4000);
-    }
-</script>

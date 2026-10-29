@@ -1,0 +1,35 @@
+---
+// src/components/InstagramBanner.astro
+import { Image } from "astro:assets";
+import Button from "./Button.astro";
+import banner from "../assets/banner.jpg";
+import { site } from "../data/site";
+---
+
+<section class="relative isolate overflow-hidden">
+    <Image
+        src={banner}
+        alt=""
+        widths={[640, 1080, 1600, 2400]}
+        width={2400}
+        sizes="100vw"
+        class="absolute inset-0 -z-10 h-full w-full object-cover"
+    />
+    <div class="absolute inset-0 -z-10 bg-black/45"></div>
+
+    <div
+        class="container-x flex flex-col items-center gap-6 py-24 text-center text-white md:py-32"
+    >
+        <p
+            class="text-xs font-medium tracking-[0.18em] uppercase text-white/80"
+        >
+            More on Instagram
+        </p>
+        <p class="max-w-2xl font-serif text-3xl leading-tight md:text-5xl">
+            Follow along for the latest shoots and behind-the-scenes.
+        </p>
+        <Button href={site.instagram.url} variant="light" external>
+            Follow {site.instagram.handle}
+        </Button>
+    </div>
+</section>

@@ -1,21 +1,46 @@
 ---
 // src/components/Button.astro
+// Renders a link when `href` is given, otherwise a <button>.
 interface Props {
-    text: string;
-    href: string;
-    variant?: "outline" | "filled";
+    href?: string;
+    type?: "button" | "submit";
+    variant?: "outline" | "filled" | "light";
+    external?: boolean;
+    class?: string;
 }
 
-const { text, href, variant = "outline" } = Astro.props;
+const {
+    href,
+    type = "button",
+    variant = "outline",
+    external = false,
+    class: className,
+} = Astro.props;
 
-const baseStyles =
-    "inline-block px-7 py-3.5 text-xs uppercase tracking-widest transition-all duration-300 rounded-sm";
 const variants = {
-    outline: "border border-ink text-ink hover:bg-ink hover:text-paper",
-    filled: "bg-ink text-paper border border-ink hover:bg-opacity-90",
+    outline: "border-ink text-ink hover:bg-ink hover:text-paper",
+    filled: "border-ink bg-ink text-paper hover:bg-ink/85",
+    light: "border-white text-white hover:bg-white hover:text-ink",
 };
+const classes = [
+    "inline-flex min-h-12 items-center justify-center gap-2 border px-7 text-sm font-medium transition-colors duration-200 cursor-pointer",
+    variants[variant],
+    className,
+];
 ---
 
-<a href={href} class={`${baseStyles} ${variants[variant]}`}>
-    {text}
-</a>
+{
+    href ? (
+        <a
+            href={href}
+            class:list={classes}
+            {...(external && { target: "_blank", rel: "noopener noreferrer" })}
+        >
+            <slot />
+        </a>
+    ) : (
+        <button type={type} class:list={classes}>
+            <slot />
+        </button>
+    )
+}

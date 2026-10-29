@@ -1,32 +1,75 @@
 ---
 // src/components/Navbar.astro
-import NavLink from "./NavLink.astro";
-
-// Define your navigation items dynamically
-const navItems = [
-    { label: "Home", href: "#" },
-    { label: "Work", href: "#work" },
-    { label: "Services", href: "#services" },
-    { label: "About", href: "#about" },
-    { label: "Contact", href: "#contact" },
-];
+import { navItems, site } from "../data/site";
 ---
 
-<nav class="border-b border-line px-8 py-6 flex justify-between items-center">
-    <!-- Brand Logo -->
-    <a
-        href="/"
-        class="font-serif tracking-widest text-lg font-medium uppercase text-ink"
-    >
-        DAN
-    </a>
+<header
+    class="sticky top-0 z-40 border-b border-line bg-paper/90 backdrop-blur"
+>
+    <nav class="container-x flex h-16 items-center justify-between">
+        <a href="/" class="font-serif text-2xl leading-none tracking-tight">
+            {site.name}
+        </a>
 
-    <!-- Dynamic Nav Links -->
-    <div class="flex space-x-8 items-center">
+        <!-- Desktop links -->
+        <ul class="hidden items-center gap-8 md:flex">
+            {
+                navItems.map((item) => (
+                    <li>
+                        <a
+                            href={item.href}
+                            class="text-sm text-ink-muted transition-colors hover:text-ink"
+                        >
+                            {item.label}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+
+        <!-- Mobile menu toggle -->
+        <button
+            id="menu-toggle"
+            type="button"
+            class="-mr-2 flex h-11 items-center px-2 text-sm md:hidden"
+            aria-expanded="false"
+            aria-controls="mobile-menu"
+        >
+            Menu
+        </button>
+    </nav>
+
+    <!-- Mobile menu panel -->
+    <ul
+        id="mobile-menu"
+        class="container-x hidden border-t border-line pb-4 md:hidden"
+    >
         {
             navItems.map((item) => (
-                <NavLink href={item.href} label={item.label} />
+                <li class="border-b border-line last:border-0">
+                    <a href={item.href} class="block py-4 font-serif text-2xl">
+                        {item.label}
+                    </a>
+                </li>
             ))
         }
-    </div>
-</nav>
+    </ul>
+</header>
+
+<script>
+    const toggle = document.getElementById("menu-toggle")!;
+    const menu = document.getElementById("mobile-menu")!;
+
+    function setOpen(open: boolean) {
+        menu.classList.toggle("hidden", !open);
+        toggle.setAttribute("aria-expanded", String(open));
+        toggle.textContent = open ? "Close" : "Menu";
+    }
+
+    toggle.addEventListener("click", () =>
+        setOpen(menu.classList.contains("hidden")),
+    );
+    menu.querySelectorAll("a").forEach((link) =>
+        link.addEventListener("click", () => setOpen(false)),
+    );
+</script>
